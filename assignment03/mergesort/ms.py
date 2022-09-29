@@ -11,7 +11,8 @@ def merge(xs1, xs2):
     if xs1.empty():
         return xs2
     
-    if xs2.empty():   
+    if xs2.empty():  
+        pass
 
 
 
