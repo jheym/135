@@ -1,4 +1,8 @@
-from time import sleep
+# hamt_hw.py modified by Justin Heyman (jheyman@csus.edu) for Fall 2022
+# Modifications implement get() and valueset() methods
+# Used w3schools.com/python/python_sets.asp for set operators
+
+
 # Hash Array Mapped Trie - Used in CSC 135, Sacramento State
 # Written by Ted Krovetz, February 2022; updated September 2022
 # 
@@ -68,9 +72,7 @@ class hamt:
     # Returns the value that key maps to, or None if not mapped
     def get(self, key):
         return self._get(key, hash(key))
-        
     
-            
     
     # Returns a Python set containing all the values in the HAMT
     def valueset(self):
@@ -109,5 +111,5 @@ if __name__ == '__main__':
     # print(d)
     # print(e)
     # print(f)
-    # print(f.get("F"))
+    print(f.get("F"))
     print(f.valueset())

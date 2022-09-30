@@ -1,3 +1,6 @@
+# Reverse.py modified by Justin Heyman (jheyman@csus.edu) for CSC 135 Fall 2022
+# Reverses a cons list called List135(), which was developed by Ted Krovetz (tdk@csus.edu)
+
 from List135 import List135
 
 # Reverses the order of a List135 and returns the reversed list.
