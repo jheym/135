@@ -1,3 +1,4 @@
+from time import sleep
 # Hash Array Mapped Trie - Used in CSC 135, Sacramento State
 # Written by Ted Krovetz, February 2022; updated September 2022
 # 
@@ -54,19 +55,43 @@ class hamt:
                 s = s + str(self._children[i])
         return s + "]"
         
-    # Returns the value that key maps to, or None if not mapped
-    def get(self, key):
+    def _get(self, key, hashbits):
         if self._key == key:
             return self._value
         else:
-            child_num = hash(key) & hamt.MASK
-            if self._children[child_num]
+            child_num = hashbits & hamt.MASK
+            if self._children[child_num]._key == key:
+                return self._children[child_num]._value
+            else:
+                return self._children[child_num]._get(key, hashbits >> hamt.BITS)
+   
+    # Returns the value that key maps to, or None if not mapped
+    def get(self, key):
+        return self._get(key, hash(key))
+        
+    
             
     
-    # Returns a Pyhton set containing all the values in the HAMT
+    # Returns a Python set containing all the values in the HAMT
     def valueset(self):
-        pass
-
+        
+        # Private helper function for clarity
+        def _noChildren(children):
+            for i in range(hamt.DEG):
+                if children[i] != None:
+                    return False
+            return True
+        
+        
+        if _noChildren(self._children): # base case
+            return {self._value}
+        else:
+            s = set()
+            for i in range(hamt.DEG):
+                if self._children[i] != None:
+                    s = s | self._children[i].valueset()
+            return s | {self._value}
+             
 
 # The following is a trick to make this testing code be ignored
 # when this file is being imported, but run when run directly
@@ -78,9 +103,11 @@ if __name__ == '__main__':
     d = c.set("D", "d")
     e = d.set("E", "e")
     f = e.set("F", "f")
-    print(a)
-    print(b)
-    print(c)
-    print(d)
-    print(e)
-    print(f)
+    # print(a)
+    # print(b)
+    # print(c)
+    # print(d)
+    # print(e)
+    # print(f)
+    # print(f.get("F"))
+    print(f.valueset())
