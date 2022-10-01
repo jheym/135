@@ -3,7 +3,7 @@
 # version of the list135 should not be altered. The easiest way to do this is
 # to build a python list from the List135, sort that list with python's sort
 # method, and then build a List135 from the result. Note: lst.sort() sorts lst
-# in place, and lst.append(x) appends x fo the end of lst. You will do this
+# in place, and lst.append(x) appends x to the end of lst. You will do this
 # problem in two parts, in this first part, write sorted so that it returns
 # just a sorted python list.
 

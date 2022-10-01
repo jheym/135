@@ -33,29 +33,52 @@ class List135:
     def add(self, data):
         return List135(data, self)
    
-       # Appends data to the end of a List135
-    def _append(self, data):
-        val = List135().add(data)
-        cur = self
-        if cur._next == None:
-            return val
-        while (cur._next._next != None):
-            cur = cur._next
-        cur._next = val
-        return self
+    # Appends data to the end of a List135
+    def append(self, data):
+        if self._next == None:
+            return List135().add(data)
+        else:
+            tmp = self
+            while (tmp._next != None):
+                last = tmp
+                tmp = tmp._next
+            last._next = List135().add(data)
+            return self
+            
+    
+    # Inserts a new List135 at the specified position
+    def insert(self, data, position):
+        pass
+    
+    # Extends to the end of the list
+    def extend(self, data: list):
+        pass
+    
+    # returns the number of nodes in the list
+    def size(self):
+        count = 0
+        while (self._next != None):
+            count += 1
+            self = self._next
+        return count
+    
     
     # return a sorted list135 that begins at self
     def sort(self):
-        cur = self
-        acc = [cur._data]
-        cur = cur._next
-        while (cur._next != None):
-            acc.append(cur._data)
-            cur = cur._next
-        slist = sorted(acc)
-        new135 = List135()
-        for i in slist:
-            a = new135._append(i) # Why doesn't this work???
+        if self._next == None:
+            return self
+        tmp = self
+        acc = []
+        while (tmp._next != None):
+            acc.append(tmp._data)
+            tmp = tmp._next
+        acc = sorted(acc)
+        new135 = List135(acc.pop(0))
+        tmp = new135
+        for i in range(len(acc)):
+            # _next should always be given a new List135
+            tmp._next = List135(acc.pop(0), List135())
+            tmp = tmp._next
         return new135
         
     
@@ -82,5 +105,8 @@ if __name__ == '__main__':
  #   print(a)
  #   print(b)
  #   print(c)
-    print(c.sort())
- #   print(List135()._append(3))
+    print(a.sort())
+    # print(List135()._append(3))
+    # print(b.append(3))
+    # print(a.append(3))
+    # print(b.size())
