@@ -23,6 +23,10 @@
 # This implementation assumes that the objects pointed at by the key and value
 # references stored in the HAMT structure do not change during the lifetime of
 # the structure.
+from typing import Callable, TypeVar, ParamSpec
+Any = TypeVar("Any")
+
+
 class hamt:
     
     DEG  = 4     # Children per node (must be power of 2)
@@ -108,35 +112,72 @@ class hamt:
                     s = s | self._children[i].valueset()
             return s | {self._value}
     
-    # f is a function that takes two values
-    def reduce(self, f, init=None):
-        
-        acc = init
+    # reduce function implementation for HAMT. f is a function that takes two values
+    def reduce(self, f: Callable[[Any, Any], Any], init=None):
         
         def _noChildren(children):
             for i in range(hamt.DEG):
                 if children[i] != None:
                     return False
             return True
-    
+        
+        # Set to true if init=None to avoid accumulating first child twice
+        initNone = False
+        
+        if init is None:
+            acc = self._value
+            initNone = True
+        else:
+            acc = init
+        
         if _noChildren(self._children): # base case
-            acc = f(acc, self._value)
-            return acc
+            return f(acc, self._value)
         else:
             for element in range(hamt.DEG):
                 if self._children[element] is not None:
                     acc = self._children[element].reduce(f, acc)
-            return f(acc, self._value)
+            if initNone is True:
+                return acc
+            else:
+                return f(acc, self._value)
+    
+    # Filter for hamt returns a new hamt based on the filter
+    # Not currently functioning
+    def filter(self, f: Callable[[Any], Any]):
+        
+        def _noChildren(children):
+            for i in range(hamt.DEG):
+                if children[i] != None:
+                    return False
+            return True
+        
+        acc = []
+        tmp = []
+        if _noChildren(self._children):
+            if f(self._value):
+                acc.append((self._key, self._value))
+                return acc
+            else:
+                return '\0'
+        else:
+            for element in range(hamt.DEG):
+                if self._children[element] is not None:
+                    tmp += self._children[element].filter(f)
+                    acc = [i for i in tmp if i is not None]
+            return acc
+                    
+        
+
 
 # The following is a trick to make this testing code be ignored
 # when this file is being imported, but run when run directly
 # https://codefather.tech/blog/if-name-main-python/
 if __name__ == '__main__':
     a = hamt("A", "a")
-    b = a.set("B", "b")
+    b = a.set("B", 2)
     c = b.set("C", "c")
     d = c.set("D", "d")
-    e = d.set("E", "e")
+    e = d.set("E", 5)
     f = e.set("F", "f")
     # print(a)
     # print(b)
@@ -146,4 +187,7 @@ if __name__ == '__main__':
     # print(f)
     # print(f.get("F"))
     # print(f.valueset())
-    print(f.reduce((lambda a, v : a + v)))
+    # print('values: [' + f.reduce(lambda a, v :  a + ', ' + str(v)) + ']')
+    # print('Node count: ' + str(f.reduce(lambda a, v : a + 1, 0)))
+
+    print(f.filter(lambda v : type(v) == int))
