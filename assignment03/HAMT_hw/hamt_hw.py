@@ -59,7 +59,8 @@ class hamt:
                 s = s + str(self._children[i])
         return s + "]"
         
-    def _get(self, key, hashbits):
+    def _get(self, key):
+        hashbits = hash(key)
         if self._key == key:
             return self._value
         else:

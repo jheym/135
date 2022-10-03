@@ -141,33 +141,47 @@ class hamt:
             else:
                 return f(acc, self._value)
     
-    # Filter for hamt returns a new hamt based on the filter
-    # Not currently functioning
-    def filter(self, f: Callable[[Any], Any]):
+    
+    
+    
+    # Theres no way he will put this on an exam
+    # def filter(self, f: Callable[[Any], Any]):
         
-        def _noChildren(children):
-            for i in range(hamt.DEG):
-                if children[i] != None:
-                    return False
-            return True
+    #     def _noChildren(children):
+    #             for i in range(hamt.DEG):
+    #                 if children[i] != None:
+    #                     return False
+    #             return True
         
-        acc = []
-        tmp = []
-        if _noChildren(self._children):
-            if f(self._value):
-                acc.append((self._key, self._value))
-                return acc
-            else:
-                return '\0'
-        else:
-            for element in range(hamt.DEG):
-                if self._children[element] is not None:
-                    tmp += self._children[element].filter(f)
-                    acc = [i for i in tmp if i is not None]
-            return acc
+    #     def _filter(self, f):
+    #         if _noChildren(self._children):
+    #             if f(self._value):
+    #                 return (self._key, self._value)
+    #             else:
+    #                 return None
+    #         else:
+    #             acc = []
+    #             for element in range(hamt.DEG):
+    #                 if self._children[element] is not None:
+    #                     t = self._children[element].filter(f)
+    #                     if t is not None:
+    #                         if type(t) == list:
+    #                             acc.extend(t)
+    #                         else:    
+    #                             acc.append(t)
+    #                     else: continue
+    #             if f(self._value):
+    #                 acc.append(self._value)
+    #                 return acc
+    #             else:
+    #                 if acc is None or len(acc) == 0:
+    #                     return None
+    #                 else:
+    #                     return acc
                     
+    #     valuelist = _filter(self, f)
+    #     for 
         
-
 
 # The following is a trick to make this testing code be ignored
 # when this file is being imported, but run when run directly
@@ -190,4 +204,4 @@ if __name__ == '__main__':
     # print('values: [' + f.reduce(lambda a, v :  a + ', ' + str(v)) + ']')
     # print('Node count: ' + str(f.reduce(lambda a, v : a + 1, 0)))
 
-    print(f.filter(lambda v : type(v) == int))
+    print(f.filter(lambda v : type(v) == str))

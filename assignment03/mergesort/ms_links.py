@@ -4,7 +4,7 @@
 # and type-correct
 
 from List135 import List135
-from ms import merge
+from ms2 import merge
 
 
 def equal135(l1, l2):
